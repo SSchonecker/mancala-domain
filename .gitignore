@@ -26,3 +26,7 @@ local.properties
 *.jar
 *.war
 *.ear
+/target/
+
+# Own additions #
+.classpath
