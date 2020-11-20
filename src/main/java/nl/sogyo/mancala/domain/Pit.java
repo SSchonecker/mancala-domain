@@ -14,7 +14,6 @@ public class Pit extends Hole {
 		return temp;
 	}
 	
-	@Override
 	public void passStones() {
 		ArrayList<Stone> temp = new ArrayList<Stone>(myStones);
 		myStones.clear();
@@ -22,6 +21,7 @@ public class Pit extends Hole {
 	}
 	
 	public void receive(ArrayList<Stone> givenStones) {
-		
+		Stone extra = givenStones.remove(0);
+		myStones.add(extra);
 	}
 }

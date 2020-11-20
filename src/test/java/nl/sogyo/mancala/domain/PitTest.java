@@ -2,14 +2,15 @@ package nl.sogyo.mancala.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
 
 public class PitTest {
 	
-	private Pit setPit() {
+	Pit setPit() {
+		/**
+		 * Create a new pit with 4 stones for testing
+		 */
 		ArrayList<Stone> Stoneslist = new ArrayList<Stone>(4);
 		Stoneslist.add(new Stone());
 		Stoneslist.add(new Stone());
@@ -20,25 +21,39 @@ public class PitTest {
 
 	@Test
 	public void pit_contains_stones() {
-		ArrayList<Stone> Stoneslist = new ArrayList<Stone>(4);
-		Stoneslist.add(new Stone());
-		Stoneslist.add(new Stone());
-		Stoneslist.add(new Stone());
-		Stoneslist.add(new Stone());
-		var thisPit = new Pit(Stoneslist);
+		/**
+		 * Check that the pit knows how many stones it contains
+		 */
+		var thisPit = setPit();
 		var contained = thisPit.numberOfStones();
-		assertEquals(Stoneslist.size(), contained);
+		assertEquals(4, contained);
+	}
+	
+	public static void pit_contains_stones(Pit thisPit, int expectedNumber) {
+		/**
+		 * Check that the pit knows how many stones it contains
+		 */
+		var contained = thisPit.numberOfStones();
+		assertEquals(expectedNumber, contained);
 	}
     
 	@Test
 	public void pit_clears() {
+		/**
+		 * Check that the pit can empty itself,
+		 * returning its stones
+		 */
 		ArrayList<Stone> Stoneslist = new ArrayList<Stone>(2);
 		Stoneslist.add(new Stone());
 		Stoneslist.add(new Stone());
 		ArrayList<Stone> start = new ArrayList<Stone>(Stoneslist);
 		var thisPit = new Pit(Stoneslist);
+		/* Note that the Stoneslist passed to pit also gets cleared
+		so a cloned list is needed for comparison */
+		
 		var returnedStones = thisPit.clear();
-		assertEquals(start, returnedStones);
+		
+		assertTrue(start.containsAll(returnedStones));
 		assertEquals(0, thisPit.numberOfStones());
 	}
 	
@@ -49,34 +64,36 @@ public class PitTest {
 		thisPit.add(new Stone());
 		assertEquals(start+1, thisPit.numberOfStones());
 	}
-	
+
 	@Test
-	public void pit_set_neighbor() {
-		var pit1 = setPit();
-		var pit2 = setPit();
-		pit1.setNextHole(pit2);
-		assertEquals(pit2, pit1.nextHole);
-	}
-	
-	@Test
-	public void pit_pass_neighbor() {
+	public void pit_pass_and_receive() {
+		/**
+		 * Check that the Stones from one pit are passed to its neighbour
+		 * which adds the first one to its own list
+		 */
 		ArrayList<Stone> Stoneslist = new ArrayList<Stone>(2);
-		Stone myStone = new Stone();
-		Stoneslist.add(myStone);
+		Stone theStone = new Stone();
+		Stoneslist.add(theStone);
 		Stoneslist.add(new Stone());
-		ArrayList<Stone> start = new ArrayList<Stone>(Stoneslist);
 		var pit1 = new Pit(Stoneslist);
 		var pit2 = setPit();
 		pit1.setNextHole(pit2);
+		var start = pit2.numberOfStones();
+		
 		pit1.passStones();
-		assertTrue(pit2.myStones.contains(start.get(0)));
-		assertEquals(0, pit1.numberOfStones());
+		
+		assertEquals(start+1,pit2.numberOfStones());
+		assertTrue(pit2.myStones.contains(theStone));
 	}
 
-	@Test
-	public void pit_receive_and_pass() {
-		var thisPit = setPit();
-		var start = thisPit.numberOfStones();
-		
-	}
+	/*public static void pit_pass_and_receive(ArrayList<Pit> thePits) {
+	*	/**
+	*	 * Check that the Stones from the pits are passed to their neighbours
+	*	 */
+	/*	
+	*	thePits.get(0).passStones();
+	*	
+	*	assertEquals(start+1,pit2.numberOfStones());
+	*	assertTrue(pit2.myStones.contains(theStone));
+	}*/
 }
