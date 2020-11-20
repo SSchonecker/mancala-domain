@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public abstract class Hole {
 	ArrayList<Stone> myStones;
 	protected Hole nextHole;
-	Player myOwner;
+	protected Player myOwner;
 	
 	int numberOfStones() { 
 		return myStones.size();
@@ -17,6 +17,10 @@ public abstract class Hole {
 	
 	void setNextHole(Hole neighbor) {
 		nextHole = neighbor;
+	}
+	
+	void setMyOwner(Player theOwner) {
+		myOwner = theOwner;
 	}
 	
 	abstract void receive(ArrayList<Stone> givenStones);
