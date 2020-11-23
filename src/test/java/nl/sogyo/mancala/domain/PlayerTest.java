@@ -5,14 +5,26 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 public class PlayerTest {
+	
+	private Board theBoard;
+	private Player player1;
+	private Player player2;
+	
+	
+	@BeforeEach
+	public void initiateBoard() {
+		theBoard = new Board();
+		player1 = theBoard.playerList.get(0);
+		player2 = theBoard.playerList.get(1);
+	}
 
 	@Test
 	public void complete_Players() {
-		Board theBoard = new Board();
 	    for (Player thePlayer : theBoard.playerList) {
 			assertEquals(6, thePlayer.pitList.size());
 			assertEquals(24, thePlayer.stonesOwned());
@@ -21,14 +33,13 @@ public class PlayerTest {
 				assertEquals(thePlayer, eachPit.myOwner);
 				assertEquals(thePlayer.myKalaha, eachPit.playersKalaha);
 			}
-			assertNotNull(thePlayer.nextPlayer);
 		}
+	    assertEquals(player1, player2.nextPlayer);
+	    assertEquals(player2, player1.nextPlayer);
 	}
 	
 	@Test
 	public void selectFirstPit() {
-		Board theBoard = new Board();
-		Player player1 = theBoard.playerList.get(0);
 		player1.selectPit(1);
 		assertEquals(0, player1.pitList.get(0).numberOfStones());
 		assertEquals(5, player1.pitList.get(1).numberOfStones());
@@ -40,9 +51,6 @@ public class PlayerTest {
 	
 	@Test
 	public void playerSwitchTurn() {
-		Board theBoard = new Board();
-		Player player1 = theBoard.playerList.get(0);
-		Player player2 = theBoard.playerList.get(1);
 		player1.myTurn = true;
 		boolean initTurn1 = player1.myTurn;
 		boolean initTurn2 = player2.myTurn;
@@ -54,8 +62,6 @@ public class PlayerTest {
 	
 	@Test
 	public void selectThirdPit() {
-		Board theBoard = new Board();
-		Player player1 = theBoard.playerList.get(0);
 		player1.myTurn = true;
 		player1.selectPit(3);
 		assertEquals(0, player1.pitList.get(2).numberOfStones());
@@ -66,9 +72,6 @@ public class PlayerTest {
 	
 	@Test
 	public void selectFourthPit() {
-		Board theBoard = new Board();
-		Player player1 = theBoard.playerList.get(0);
-		Player player2 = theBoard.playerList.get(1);
 		player1.myTurn = true;
 		player1.selectPit(4);
 		assertEquals(0, player1.pitList.get(3).numberOfStones());
@@ -80,11 +83,8 @@ public class PlayerTest {
 	
 	@Test
 	public void endInEmptyPit() {
-		Board theBoard = new Board();
-		Player player1 = theBoard.playerList.get(0);
-		Player player2 = theBoard.playerList.get(1);
-		player1.myTurn = true;
-		player1.selectPit(6);
+		int[] stonesLayout = {4,4,4,4,4,0,1,5,5,5,4,4,4,0};
+		theBoard.setLayout(stonesLayout);
 		player1.myTurn = true;
 		player1.selectPit(2);
 		
@@ -99,12 +99,8 @@ public class PlayerTest {
 	
 	@Test
 	public void setLayoutTest() {
-		Board theBoard = new Board();
 		int[] stonesLayout = {4,3,5,4,4,4,0,3,3,6,4,4,4,0};
 		theBoard.setLayout(stonesLayout);
-		
-		Player player1 = theBoard.playerList.get(0);
-		Player player2 = theBoard.playerList.get(1);
 		assertEquals(4, player1.pitList.get(0).numberOfStones());
 		assertEquals(3, player1.pitList.get(1).numberOfStones());
 		assertEquals(5, player1.pitList.get(2).numberOfStones());
@@ -123,10 +119,8 @@ public class PlayerTest {
 	
 	@Test
 	public void selectWrongPit() {
-		Board theBoard = new Board();
 		int[] stonesLayout = {4,0,5,5,5,0,7,0,5,5,4,4,4,0};
 		theBoard.setLayout(stonesLayout);
-		Player player1 = theBoard.playerList.get(0);
 		player1.myTurn = true;
 		Assertions.assertThrows(IndexOutOfBoundsException.class, () -> player1.selectPit(7));
 		Assertions.assertThrows(IndexOutOfBoundsException.class, () -> player1.selectPit(-1));
@@ -135,11 +129,8 @@ public class PlayerTest {
 	
 	@Test
 	public void opponentsEmptyPit() {
-		Board theBoard = new Board();
 		int[] stonesLayout = {1,5,6,4,2,4,5,2,1,0,1,1,3,13};
 		theBoard.setLayout(stonesLayout);
-		Player player1 = theBoard.playerList.get(0);
-		Player player2 = theBoard.playerList.get(1);
 		player1.myTurn = true;
 		player1.selectPit(6);
 		
@@ -150,6 +141,16 @@ public class PlayerTest {
 		assertEquals(1, player2.pitList.get(2).numberOfStones());
 		assertEquals(false, player1.myTurn);
 		assertTrue(player2.myTurn);
+	}
+	
+	@Test
+	public void passTwoKalahas() {
+		// TODO what should happen here
+	}
+	
+	@Test
+	public void allPitsEmpty() {
+		// TODO what should happen here
 	}
 	
 }
