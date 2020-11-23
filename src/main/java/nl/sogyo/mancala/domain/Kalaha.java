@@ -10,13 +10,16 @@ public class Kalaha extends Hole {
 
 	@Override
 	void receive(ArrayList<Stone> givenStones) {
-		boolean ownersTurn = myOwner.hasTurn();
 		
-		if (ownersTurn) {
+		if (myOwner.hasTurn()) {
 			Stone extra = givenStones.remove(0);
 			myStones.add(extra);}
+		
 		if (givenStones.size() > 0) {
 			nextHole.receive(givenStones);
+		}
+		else {
+			myOwner.keepTurn();
 		}
 		
 	}

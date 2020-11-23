@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Pit extends Hole {
 	
 	private Pit opponentPit;
-	private Kalaha playersKalaha;
+	Kalaha playersKalaha;
 
 	public Pit(ArrayList<Stone> startStones) {
 		myStones = startStones;
@@ -30,6 +30,7 @@ public class Pit extends Hole {
 			if (myStones.size() == 1 && myOwner.hasTurn()) {
 				stealStones();
 			}
+			myOwner.switchTurn();
 		}
 		else {
 			nextHole.receive(givenStones);

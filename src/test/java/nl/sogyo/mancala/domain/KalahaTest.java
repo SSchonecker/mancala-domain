@@ -25,13 +25,17 @@ public class KalahaTest {
 		toBeAdded.add(new Stone());
 		
 		thisKalaha.takeAllStones(toBeAdded);
-		assertEquals(3,thisKalaha.numberOfStones());
+		assertEquals(3, thisKalaha.numberOfStones());
 	}
 	
 	@Test
 	public void kalahasOwner() {
 		var thisKalaha = new Kalaha();
 		var owner = new Player();
+		ArrayList<Stone> Stoneslist = new ArrayList<Stone>(1);
+		Stoneslist.add(new Stone());
+		var pit1 = new Pit(Stoneslist);
+		owner.pitList.add(pit1);
 		owner.giveKalaha(thisKalaha);
 		assertEquals(owner,thisKalaha.myOwner);
 	}
@@ -55,8 +59,9 @@ public class KalahaTest {
 	@Test
 	public void pitPassKalahaCorrectOwner() {
 		/**
-		 * Check that the Stones from one pit are passed to its neighbouring kalaha
-		 * which adds the first one to its own list if it's its owners turn
+		 * Check that the Stones from one pit are passed to 
+		 * its neighbouring kalaha, which adds the first one to its own list
+		 * if it's its owners turn
 		 */
 		ArrayList<Stone> Stoneslist = new ArrayList<Stone>(1);
 		Stone theStone = new Stone();
@@ -79,8 +84,9 @@ public class KalahaTest {
 	@Test
 	public void pitPassKalahaFalseOwner() {
 		/**
-		 * Check that the Stones from one pit are passed to its neighbouring kalaha
-		 * which adds the first one to its own list if it's its owners turn
+		 * Check that the Stones from one pit are passed to
+		 * its neighbouring kalaha, which doesn't add one to its own list
+		 * if it's not its owners turn
 		 */
 		ArrayList<Stone> Stoneslist = new ArrayList<Stone>(2);
 		Stone theStone = new Stone();
@@ -101,8 +107,8 @@ public class KalahaTest {
 		player1.myTurn = true;
 		
 		player1.pitList.add(pit1);
-		player2.giveKalaha(theKalaha);
 		player2.pitList.add(pit2);
+		player2.giveKalaha(theKalaha);
 		var start = theKalaha.numberOfStones();
 		
 		pit2.passStones();
@@ -118,6 +124,11 @@ public class KalahaTest {
 		 */
 		var theKalaha = new Kalaha();
 
+		ArrayList<Stone> Stoneslist1 = new ArrayList<Stone>(2);
+		Stoneslist1.add(new Stone());
+		Stoneslist1.add(new Stone());
+		var pit1 = new Pit(Stoneslist1);
+		
 		ArrayList<Stone> Stoneslist2 = new ArrayList<Stone>(4);
 		Stoneslist2.add(new Stone());
 		Stoneslist2.add(new Stone());
@@ -127,9 +138,13 @@ public class KalahaTest {
 		Player player1 = new Player();
 		Player player2 = new Player();
 		player1.myTurn = true;
+		player2.nextPlayer = player1;
 
+		player1.pitList.add(pit1);
+		pit1.myOwner = player1;
 		player1.giveKalaha(theKalaha);
 		player2.pitList.add(pit2);
+		pit2.myOwner = player2;
 		var start = pit2.numberOfStones();
 		
 		ArrayList<Stone> Stoneslist = new ArrayList<Stone>(2);
@@ -164,6 +179,7 @@ public class KalahaTest {
 		assertEquals(0, pit1.numberOfStones());
 		assertEquals(1, kalaha1.numberOfStones());
 		assertEquals(1, startingPlayer.stonesOwned());
+		assertTrue(startingPlayer.myTurn);
 	}
 	
 	@Test
@@ -175,16 +191,23 @@ public class KalahaTest {
 		var pit1 = new Pit(Stoneslist);
 		ArrayList<Pit> pitList = new ArrayList<Pit>();
 		pitList.add(pit1);
+		
+		ArrayList<Stone> Stoneslist2 = new ArrayList<Stone>(1);
+		Stoneslist2.add(new Stone());
+		var pit2 = new Pit(Stoneslist2);
 
 		kalaha1.setNextHole(pit1);
 		
 		Player startingPlayer = new Player();
 		startingPlayer.myTurn = false;
+		startingPlayer.pitList.add(pit2);
 		startingPlayer.giveKalaha(kalaha1);
 		
 		Player opposingPlayer = new Player();
 		opposingPlayer.myTurn = true;
 		opposingPlayer.givePits(pitList);
+		opposingPlayer.giveKalaha(new Kalaha());
+		opposingPlayer.setNextPlayer(startingPlayer);
 		
 		ArrayList<Stone> Stoneslist3 = new ArrayList<Stone>(1);
 		Stoneslist3.add(new Stone());
@@ -193,6 +216,6 @@ public class KalahaTest {
 		
 		assertEquals(2, pit1.numberOfStones());
 		assertEquals(0, kalaha1.numberOfStones());
-		assertEquals(0, startingPlayer.stonesOwned());
+		assertEquals(1, startingPlayer.stonesOwned());
 	}
 }

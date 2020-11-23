@@ -87,6 +87,15 @@ public class PitTest {
 		pit2.setNextHole(pit3);
 		var initNr2 = pit2.numberOfStones();
 		var initNr3 = pit3.numberOfStones();
+		ArrayList<Pit> pitList = new ArrayList<Pit>(2);
+		pitList.add(pit1);
+		pitList.add(pit2);
+		pitList.add(pit3);
+		
+		Player aPlayer = new Player();
+		aPlayer.givePits(pitList);
+		Player bPlayer = new Player();
+		aPlayer.nextPlayer = bPlayer;
 		
 		pit1.passStones();
 		
@@ -97,8 +106,8 @@ public class PitTest {
 	
 	@Test
 	public void lastPitStealsStones() {
-		ArrayList<Stone> Stoneslist = new ArrayList<Stone>(0);
-		var pit1 = new Pit(Stoneslist);
+		ArrayList<Stone> emptylist = new ArrayList<Stone>(0);
+		var pit1 = new Pit(emptylist);
 		var pit2 = setPit();
 		var pit3 = setPit();
 		pit1.setNextHole(pit2);
@@ -113,14 +122,18 @@ public class PitTest {
 		startingPlayer.givePits(pitList);
 		Kalaha ownedKalaha = new Kalaha();
 		startingPlayer.giveKalaha(ownedKalaha);
+
+		Player bPlayer = new Player();
+		startingPlayer.nextPlayer = bPlayer;
 		
-		ArrayList<Stone> Stoneslist2 = new ArrayList<Stone>(1);
-		Stoneslist2.add(new Stone());
+		ArrayList<Stone> Stonelist = new ArrayList<Stone>(1);
+		Stonelist.add(new Stone());
 		
-		pit1.receive(Stoneslist2);
+		pit1.receive(Stonelist);
 		
-		assertEquals(0, pit3.myStones.size());
-		assertEquals(0, pit1.myStones.size());
+		assertEquals(0, pit3.numberOfStones());
+		assertEquals(0, pit1.numberOfStones());
+		assertEquals(5, ownedKalaha.numberOfStones());
 		assertEquals(9, startingPlayer.stonesOwned()); // 4 from pit2, 4 from pit3, 1 added
 	}
 	
@@ -139,40 +152,17 @@ public class PitTest {
 		startingPlayer.givePits(pitList);
 		Kalaha ownedKalaha = new Kalaha();
 		startingPlayer.giveKalaha(ownedKalaha);
+
+		Player bPlayer = new Player();
+		startingPlayer.nextPlayer = bPlayer;
 		
-		ArrayList<Stone> Stoneslist2 = new ArrayList<Stone>(1);
-		Stoneslist2.add(new Stone());
+		ArrayList<Stone> Stonelist = new ArrayList<Stone>(1);
+		Stonelist.add(new Stone());
 		
-		pit1.receive(Stoneslist2);
+		pit1.receive(Stonelist);
 		
 		assertEquals(5, pit1.numberOfStones());
 		assertEquals(4, pit2.numberOfStones());
 		assertEquals(9, startingPlayer.stonesOwned()); // 4 from pit1, 4 from pit2, 1 added
-	}
-	
-	@Test
-	public void lastPitEmptyAndOpponents() {
-		ArrayList<Stone> Stoneslist = new ArrayList<Stone>(0);
-		var pit1 = new Pit(Stoneslist);
-		var pit2 = setPit();
-		pit1.setOpponent(pit2);
-		
-		ArrayList<Pit> pitList = new ArrayList<Pit>(1);
-		pitList.add(pit1);
-		
-		Player startingPlayer = new Player();
-		startingPlayer.myTurn = false;
-		startingPlayer.givePits(pitList);
-		Kalaha ownedKalaha = new Kalaha();
-		startingPlayer.giveKalaha(ownedKalaha);
-		
-		ArrayList<Stone> Stoneslist2 = new ArrayList<Stone>(1);
-		Stoneslist2.add(new Stone());
-		
-		pit1.receive(Stoneslist2);
-		
-		assertEquals(4, pit2.myStones.size());
-		assertEquals(1, pit1.myStones.size());
-		assertEquals(1, startingPlayer.stonesOwned()); // only one added to pit1
 	}
 }
