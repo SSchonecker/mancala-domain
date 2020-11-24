@@ -14,6 +14,9 @@ public class Board {
 	}
 	
 	public void initiate() {
+		/**
+		 * Create the players, holes and stones in start state
+		 */
 		for (int p = 0; p < numberOfPlayers; p++) {
 			Player aPlayer = new Player();
 			ArrayList<Pit> playersPits = new ArrayList<Pit>(pitsPerPlayer);
@@ -31,9 +34,13 @@ public class Board {
 			playerList.add(aPlayer);
 		}
 		createOpponents();
+		playerList.get(0).isMyTurn = true;
 	}
 	
 	private void createOpponents() {
+		/**
+		 * Set the players opponent and links the opposing pits
+		 */
 		for (int p = 0; p < numberOfPlayers; p++) {
 			Player thisPlayer = playerList.get(p);
 			Player opponent = playerList.get((p+1)%numberOfPlayers);
@@ -41,12 +48,16 @@ public class Board {
 			for (int i = 0; i < pitsPerPlayer; i++) {
 				Pit opposingPit = opponent.pitList.get(pitsPerPlayer - 1 - i);
 				Pit thisPit = thisPlayer.pitList.get(i);
-				thisPit.setOpponent(opposingPit);
+				thisPit.setOpponentPit(opposingPit);
 			}
 		}
 	}
 
 	public void setLayout(int[] nrStonesInHoles) {
+		/**
+		 * Set up the pits and kahala's with the amount of stones
+		 * given by each element of the input list
+		 */
 		ArrayList<Stone> allStones = clearBoard();
 		int holeIndex = 0;
 		for (Player aplayer : playerList) {
@@ -65,13 +76,42 @@ public class Board {
 	}
 
 	private ArrayList<Stone> clearBoard() {
+		/**
+		 * Take all stones out of all pits.
+		 * Assuming there are no stones in the kalaha's
+		 */
 		ArrayList<Stone> allStones = new ArrayList<Stone>(48);
 		for (Player aplayer : playerList) {
 			for (Pit eachPit : aplayer.pitList) {
-				allStones.addAll(eachPit.clear());
+				allStones.addAll(eachPit.giveupStones());
 			}
 		}
 		return allStones;
+	}
+
+	public Player giveWinner() {
+		/**
+		 * Return the player with the most stones
+		 */
+		Player winner = playerList.get(0);
+		for (Player aplayer : playerList) {
+			if (aplayer.stonesOwned() > winner.stonesOwned()) {
+				winner = aplayer;
+			}
+		}
+		return winner;
+	}
+
+	public boolean playGame() {
+		/**
+		 * Check for sides with empty pits
+		 */
+		for (Player aplayer : playerList) {
+			if (aplayer.stonesInPits() == 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 }

@@ -56,7 +56,7 @@ public class PitTest {
 		/* Note that the Stoneslist passed to pit also gets cleared
 		so a cloned list is needed for comparison */
 		
-		var returnedStones = thisPit.clear();
+		var returnedStones = thisPit.giveupStones();
 		
 		assertTrue(returnedStones.containsAll(start));
 		assertEquals(0, thisPit.numberOfStones());
@@ -111,14 +111,14 @@ public class PitTest {
 		var pit2 = setPit();
 		var pit3 = setPit();
 		pit1.setNextHole(pit2);
-		pit1.setOpponent(pit3);
+		pit1.setOpponentPit(pit3);
 		
 		ArrayList<Pit> pitList = new ArrayList<Pit>(2);
 		pitList.add(pit1);
 		pitList.add(pit2);
 		
 		Player startingPlayer = new Player();
-		startingPlayer.myTurn = true;
+		startingPlayer.isMyTurn = true;
 		startingPlayer.givePits(pitList);
 		Kalaha ownedKalaha = new Kalaha();
 		startingPlayer.giveKalaha(ownedKalaha);
@@ -148,7 +148,7 @@ public class PitTest {
 		pitList.add(pit2);
 		
 		Player startingPlayer = new Player();
-		startingPlayer.myTurn = true;
+		startingPlayer.isMyTurn = true;
 		startingPlayer.givePits(pitList);
 		Kalaha ownedKalaha = new Kalaha();
 		startingPlayer.giveKalaha(ownedKalaha);

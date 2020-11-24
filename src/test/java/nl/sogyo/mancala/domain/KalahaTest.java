@@ -72,7 +72,7 @@ public class KalahaTest {
 		pit1.setNextHole(theKalaha);
 		
 		Player player1 = new Player();
-		player1.myTurn = true;
+		player1.isMyTurn = true;
 		player1.pitList.add(pit1);
 		player1.giveKalaha(theKalaha);
 		
@@ -104,7 +104,7 @@ public class KalahaTest {
 		theKalaha.setNextHole(pit1);
 		Player player1 = new Player();
 		Player player2 = new Player();
-		player1.myTurn = true;
+		player1.isMyTurn = true;
 		
 		player1.pitList.add(pit1);
 		player2.pitList.add(pit2);
@@ -137,7 +137,7 @@ public class KalahaTest {
 		theKalaha.setNextHole(pit2);
 		Player player1 = new Player();
 		Player player2 = new Player();
-		player1.myTurn = true;
+		player1.isMyTurn = true;
 		player2.nextPlayer = player1;
 
 		player1.pitList.add(pit1);
@@ -167,7 +167,7 @@ public class KalahaTest {
 		pitList.add(pit1);
 		
 		Player startingPlayer = new Player();
-		startingPlayer.myTurn = true;
+		startingPlayer.isMyTurn = true;
 		startingPlayer.givePits(pitList);
 		startingPlayer.giveKalaha(kalaha1);
 		
@@ -179,7 +179,7 @@ public class KalahaTest {
 		assertEquals(0, pit1.numberOfStones());
 		assertEquals(1, kalaha1.numberOfStones());
 		assertEquals(1, startingPlayer.stonesOwned());
-		assertTrue(startingPlayer.myTurn);
+		assertTrue(startingPlayer.isMyTurn);
 	}
 	
 	@Test
@@ -199,12 +199,11 @@ public class KalahaTest {
 		kalaha1.setNextHole(pit1);
 		
 		Player startingPlayer = new Player();
-		startingPlayer.myTurn = false;
 		startingPlayer.pitList.add(pit2);
 		startingPlayer.giveKalaha(kalaha1);
 		
 		Player opposingPlayer = new Player();
-		opposingPlayer.myTurn = true;
+		opposingPlayer.isMyTurn = true;
 		opposingPlayer.givePits(pitList);
 		opposingPlayer.giveKalaha(new Kalaha());
 		opposingPlayer.setNextPlayer(startingPlayer);

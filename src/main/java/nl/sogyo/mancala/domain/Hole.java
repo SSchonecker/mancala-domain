@@ -3,7 +3,7 @@ package nl.sogyo.mancala.domain;
 import java.util.ArrayList;
 
 public abstract class Hole {
-	ArrayList<Stone> myStones;
+	protected ArrayList<Stone> myStones;
 	protected Hole nextHole;
 	protected Player myOwner;
 	
