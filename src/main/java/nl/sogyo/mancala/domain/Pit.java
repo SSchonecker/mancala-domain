@@ -1,17 +1,15 @@
 package nl.sogyo.mancala.domain;
 
-import java.util.ArrayList;
-
 public class Pit extends Hole {
 	
 	private Pit opponentPit;
 	Kalaha playersKalaha;
 
-	public Pit(ArrayList<Stone> startStones) {
+	public Pit(int startStones) {
 		/**
-		 * Create a pit with (a cloned list of) stones
+		 * Create a pit with stones
 		 */
-		myStones = new ArrayList<Stone>(startStones);
+		myStones = startStones;
 	}
 	
 	public void setOpponentPit(Pit opponentPit) {
@@ -22,12 +20,12 @@ public class Pit extends Hole {
 		playersKalaha = theKalaha;
 	}
 	
-	ArrayList<Stone> giveupStones() {
+	int giveupStones() {
 		/**
 		 * Return a copy of the pit's stones, removing them
 		 */
-		ArrayList<Stone> temp = new ArrayList<Stone>(myStones);
-		myStones.clear();
+		int temp = myStones;
+		myStones = 0;
 		return temp;
 	}
 	
@@ -38,15 +36,15 @@ public class Pit extends Hole {
 		nextHole.receive(giveupStones());
 	}
 	
-	public void receive(ArrayList<Stone> givenStones) {
+	public void receive(int givenStones) {
 		/**
 		 * From a list of stones, take one and pass the list to neighbour
 		 * if possible.
 		 * If not, check pit's state and switch turns
 		 */
-		Stone extra = givenStones.remove(0);
-		myStones.add(extra);
-		if (givenStones.size() > 0) {
+		givenStones--;
+		myStones++;
+		if (givenStones > 0) {
 			nextHole.receive(givenStones);
 		}
 		else {
@@ -60,7 +58,7 @@ public class Pit extends Hole {
 		 * Check if the pit was empty before the move and
 		 * the owner has the turn, to steal the opponents stones
 		 */
-		if (myStones.size() == 1 && myOwner.isMyTurn) {
+		if (myStones == 1 && myOwner.isMyTurn) {
 			stealStones();
 		}		
 	}
@@ -70,8 +68,8 @@ public class Pit extends Hole {
 		 * Take all the stones from the opposing pit into own stone list
 		 * and move all stones to the Kalaha if opponent had stones
 		 */
-		myStones.addAll(opponentPit.giveupStones());
-		if (myStones.size() > 1) {
+		myStones += opponentPit.giveupStones();
+		if (myStones > 1) {
 			playersKalaha.takeAllStones(giveupStones());
 		}
 	}

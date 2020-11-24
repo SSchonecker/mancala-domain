@@ -48,7 +48,7 @@ public class Player {
 		 * Return all stones on player's side
 		 */
 		int totalStones = stonesInPits();
-		totalStones += myKalaha.numberOfStones();
+		totalStones += myKalaha.myStones;
 		return totalStones;
 	}
 	
@@ -58,7 +58,7 @@ public class Player {
 		 */
 		int totalStones = 0;
 		for (Pit myPit : pitList) {
-			totalStones += myPit.numberOfStones();
+			totalStones += myPit.myStones;
 		}
 		return totalStones;
 	}
@@ -72,8 +72,15 @@ public class Player {
 		/**
 		 * Player selects a pit to start turn
 		 * (can eventually take other type of/user input)
+		 * If pit is empty, no pit is selected
 		 */
-		pitList.get(pitNr - 1).passStones();
+		Pit selection = pitList.get(pitNr - 1);
+		if (selection.myStones == 0) {
+			selectPit(-1);
+		}
+		else {
+			selection.passStones();
+		}
 	}
 	
 }

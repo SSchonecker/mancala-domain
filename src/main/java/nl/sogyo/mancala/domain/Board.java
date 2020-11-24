@@ -15,18 +15,14 @@ public class Board {
 	
 	public void initiate() {
 		/**
-		 * Create the players, holes and stones in start state
+		 * Create the players and holes with stones in start state
 		 */
 		for (int p = 0; p < numberOfPlayers; p++) {
 			Player aPlayer = new Player();
 			ArrayList<Pit> playersPits = new ArrayList<Pit>(pitsPerPlayer);
 			
 			for (int i = 0; i < pitsPerPlayer; i++) {
-				ArrayList<Stone> newStones = new ArrayList<Stone>(stonesPerPit);
-				for (int j = 0; j < stonesPerPit; j++) {
-					newStones.add(new Stone());
-				}
-				playersPits.add(new Pit(newStones));
+				playersPits.add(new Pit(stonesPerPit));
 			}
 			
 			aPlayer.givePits(playersPits);
@@ -58,35 +54,15 @@ public class Board {
 		 * Set up the pits and kahala's with the amount of stones
 		 * given by each element of the input list
 		 */
-		ArrayList<Stone> allStones = clearBoard();
 		int holeIndex = 0;
 		for (Player aplayer : playerList) {
 			for (Pit eachPit : aplayer.pitList) {
-				for (int i = 0; i < nrStonesInHoles[holeIndex]; i++) {
-					eachPit.myStones.add(allStones.remove(0));
-				}
+				eachPit.myStones = nrStonesInHoles[holeIndex];
 				holeIndex++;
 			}
-			for (int i = 0; i < nrStonesInHoles[holeIndex]; i++) {
-				aplayer.myKalaha.myStones.add(allStones.remove(0));
-			}
+			aplayer.myKalaha.myStones = nrStonesInHoles[holeIndex];
 			holeIndex++;
 		}
-		
-	}
-
-	private ArrayList<Stone> clearBoard() {
-		/**
-		 * Take all stones out of all pits.
-		 * Assuming there are no stones in the kalaha's
-		 */
-		ArrayList<Stone> allStones = new ArrayList<Stone>(48);
-		for (Player aplayer : playerList) {
-			for (Pit eachPit : aplayer.pitList) {
-				allStones.addAll(eachPit.giveupStones());
-			}
-		}
-		return allStones;
 	}
 
 	public Player giveWinner() {

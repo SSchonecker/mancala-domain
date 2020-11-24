@@ -8,21 +8,21 @@ public class Kalaha extends Hole {
 		/**
 		 * The Kalaha is constructed with an empty stones list
 		 */
-		myStones = new ArrayList<Stone>();
+		myStones = 0;
 	}
 
 	@Override
-	void receive(ArrayList<Stone> givenStones) {
+	void receive(int givenStones) {
 		/**
 		 * From a list of stones, take one if the Kalaha's owner is at play.
 		 * Pass the list to neighbour if it's not empty
 		 * If it is, the owner keeps their turn
 		 */
 		if (myOwner.isMyTurn) {
-			Stone extra = givenStones.remove(0);
-			myStones.add(extra);}
+			givenStones--;
+			myStones++;}
 		
-		if (givenStones.size() > 0) {
+		if (givenStones > 0) {
 			nextHole.receive(givenStones);
 		}
 		else {
@@ -31,13 +31,11 @@ public class Kalaha extends Hole {
 		
 	}
 	
-	void takeAllStones(ArrayList<Stone> givenStones) {
+	void takeAllStones(int givenStones) {
 		/**
 		 * Add all given stones to own stones (in case of stealing)
 		 */
-		for (Stone elem : givenStones) {
-			add(elem);
-		}
+		myStones += givenStones;
 	}
 	
 

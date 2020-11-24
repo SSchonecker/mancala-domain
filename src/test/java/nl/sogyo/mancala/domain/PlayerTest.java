@@ -24,20 +24,20 @@ public class PlayerTest {
 	public void setLayoutTest() {
 		int[] stonesLayout = {4,3,5,4,4,4,0,3,3,6,4,4,4,0};
 		theBoard.setLayout(stonesLayout);
-		assertEquals(4, player1.pitList.get(0).numberOfStones());
-		assertEquals(3, player1.pitList.get(1).numberOfStones());
-		assertEquals(5, player1.pitList.get(2).numberOfStones());
-		assertEquals(4, player1.pitList.get(3).numberOfStones());
-		assertEquals(4, player1.pitList.get(4).numberOfStones());
-		assertEquals(4, player1.pitList.get(5).numberOfStones());
-		assertEquals(0, player1.myKalaha.numberOfStones());
-		assertEquals(3, player2.pitList.get(0).numberOfStones());
-		assertEquals(3, player2.pitList.get(1).numberOfStones());
-		assertEquals(6, player2.pitList.get(2).numberOfStones());
-		assertEquals(4, player2.pitList.get(3).numberOfStones());
-		assertEquals(4, player2.pitList.get(4).numberOfStones());
-		assertEquals(4, player2.pitList.get(5).numberOfStones());
-		assertEquals(0, player2.myKalaha.numberOfStones());
+		assertEquals(4, player1.pitList.get(0).myStones);
+		assertEquals(3, player1.pitList.get(1).myStones);
+		assertEquals(5, player1.pitList.get(2).myStones);
+		assertEquals(4, player1.pitList.get(3).myStones);
+		assertEquals(4, player1.pitList.get(4).myStones);
+		assertEquals(4, player1.pitList.get(5).myStones);
+		assertEquals(0, player1.myKalaha.myStones);
+		assertEquals(3, player2.pitList.get(0).myStones);
+		assertEquals(3, player2.pitList.get(1).myStones);
+		assertEquals(6, player2.pitList.get(2).myStones);
+		assertEquals(4, player2.pitList.get(3).myStones);
+		assertEquals(4, player2.pitList.get(4).myStones);
+		assertEquals(4, player2.pitList.get(5).myStones);
+		assertEquals(0, player2.myKalaha.myStones);
 	}
 
 	@Test
@@ -65,12 +65,12 @@ public class PlayerTest {
 		 * Check if the stones get correctly redistributed
 		 */
 		player1.selectPit(1);
-		assertEquals(0, player1.pitList.get(0).numberOfStones());
-		assertEquals(5, player1.pitList.get(1).numberOfStones());
-		assertEquals(5, player1.pitList.get(2).numberOfStones());
-		assertEquals(5, player1.pitList.get(3).numberOfStones());
-		assertEquals(5, player1.pitList.get(4).numberOfStones());
-		assertEquals(4, player1.pitList.get(5).numberOfStones());
+		assertEquals(0, player1.pitList.get(0).myStones);
+		assertEquals(5, player1.pitList.get(1).myStones);
+		assertEquals(5, player1.pitList.get(2).myStones);
+		assertEquals(5, player1.pitList.get(3).myStones);
+		assertEquals(5, player1.pitList.get(4).myStones);
+		assertEquals(4, player1.pitList.get(5).myStones);
 	}
 	
 	@Test
@@ -93,9 +93,9 @@ public class PlayerTest {
 		 * the player keeps their turn
 		 */
 		player1.selectPit(3);
-		assertEquals(0, player1.pitList.get(2).numberOfStones());
-		assertEquals(5, player1.pitList.get(3).numberOfStones());
-		assertEquals(1, player1.myKalaha.numberOfStones());
+		assertEquals(0, player1.pitList.get(2).myStones);
+		assertEquals(5, player1.pitList.get(3).myStones);
+		assertEquals(1, player1.myKalaha.myStones);
 		assertTrue(player1.isMyTurn);
 		assertEquals(false, player2.isMyTurn);
 	}
@@ -107,10 +107,10 @@ public class PlayerTest {
 		 * with a stone in the other player's pit
 		 */
 		player1.selectPit(4);
-		assertEquals(0, player1.pitList.get(3).numberOfStones());
-		assertEquals(5, player1.pitList.get(4).numberOfStones());
-		assertEquals(1, player1.myKalaha.numberOfStones());
-		assertEquals(5, player2.pitList.get(0).numberOfStones());
+		assertEquals(0, player1.pitList.get(3).myStones);
+		assertEquals(5, player1.pitList.get(4).myStones);
+		assertEquals(1, player1.myKalaha.myStones);
+		assertEquals(5, player2.pitList.get(0).myStones);
 		assertEquals(false, player1.isMyTurn);
 		assertTrue(player2.isMyTurn);
 	}
@@ -125,12 +125,12 @@ public class PlayerTest {
 		theBoard.setLayout(stonesLayout);
 		player1.selectPit(2);
 		
-		assertEquals(0, player1.pitList.get(1).numberOfStones());
-		assertEquals(5, player1.pitList.get(3).numberOfStones());
-		assertEquals(0, player1.pitList.get(5).numberOfStones());
-		assertEquals(7, player1.myKalaha.numberOfStones());
-		assertEquals(0, player2.pitList.get(0).numberOfStones());
-		assertEquals(5, player2.pitList.get(2).numberOfStones());
+		assertEquals(0, player1.pitList.get(1).myStones);
+		assertEquals(5, player1.pitList.get(3).myStones);
+		assertEquals(0, player1.pitList.get(5).myStones);
+		assertEquals(7, player1.myKalaha.myStones);
+		assertEquals(0, player2.pitList.get(0).myStones);
+		assertEquals(5, player2.pitList.get(2).myStones);
 		assertEquals(false, player1.isMyTurn);
 		assertTrue(player2.isMyTurn);
 	}
@@ -145,28 +145,38 @@ public class PlayerTest {
 		theBoard.setLayout(stonesLayout);
 		player1.selectPit(2);
 		
-		assertEquals(0, player1.pitList.get(1).numberOfStones());
-		assertEquals(5, player1.pitList.get(3).numberOfStones());
-		assertEquals(1, player1.pitList.get(5).numberOfStones());
-		assertEquals(1, player1.myKalaha.numberOfStones());
-		assertEquals(0, player2.pitList.get(0).numberOfStones());
-		assertEquals(10, player2.pitList.get(1).numberOfStones());
+		assertEquals(0, player1.pitList.get(1).myStones);
+		assertEquals(5, player1.pitList.get(3).myStones);
+		assertEquals(1, player1.pitList.get(5).myStones);
+		assertEquals(1, player1.myKalaha.myStones);
+		assertEquals(0, player2.pitList.get(0).myStones);
+		assertEquals(10, player2.pitList.get(1).myStones);
 		assertEquals(false, player1.isMyTurn);
 		assertTrue(player2.isMyTurn);
 	}
 	
 	@Test
-	public void selectWrongPit() {
+	public void selectNonePit() {
 		/**
-		 * In case a player selects a wrong or non-existing pit
+		 * In case a player selects a non-existing pit
 		 * an error is thrown that could be dealt with later on
+		 * (in an input-checker or sth)
+		 */
+		Assertions.assertThrows(IndexOutOfBoundsException.class, () -> player1.selectPit(7));
+		Assertions.assertThrows(IndexOutOfBoundsException.class, () -> player1.selectPit(-1));
+	}
+	
+	@Test
+	public void selectEmptyPit() {
+		/**
+		 * In case a player selects an empty pit
+		 * an IndexOutOfBoundsException is thrown 
+		 * that could be dealt with later on in the same manner as above
 		 * (in an input-checker or sth)
 		 */
 		int[] stonesLayout = {4,0,5,5,5,0,7,0,5,5,4,4,4,0};
 		theBoard.setLayout(stonesLayout);
 		Assertions.assertThrows(IndexOutOfBoundsException.class, () -> player1.selectPit(7));
-		Assertions.assertThrows(IndexOutOfBoundsException.class, () -> player1.selectPit(-1));
-		Assertions.assertThrows(IndexOutOfBoundsException.class, () -> player1.selectPit(2));
 	}
 	
 	@Test
@@ -178,11 +188,11 @@ public class PlayerTest {
 		theBoard.setLayout(stonesLayout);
 		player1.selectPit(6);
 		
-		assertEquals(0, player1.pitList.get(5).numberOfStones());
-		assertEquals(6, player1.myKalaha.numberOfStones());
-		assertEquals(3, player2.pitList.get(0).numberOfStones());
-		assertEquals(2, player2.pitList.get(1).numberOfStones());
-		assertEquals(1, player2.pitList.get(2).numberOfStones());
+		assertEquals(0, player1.pitList.get(5).myStones);
+		assertEquals(6, player1.myKalaha.myStones);
+		assertEquals(3, player2.pitList.get(0).myStones);
+		assertEquals(2, player2.pitList.get(1).myStones);
+		assertEquals(1, player2.pitList.get(2).myStones);
 		assertEquals(false, player1.isMyTurn);
 		assertTrue(player2.isMyTurn);
 	}
@@ -196,11 +206,11 @@ public class PlayerTest {
 		theBoard.setLayout(stonesLayout);
 		player1.selectPit(5);
 		
-		assertEquals(2, player1.pitList.get(1).numberOfStones());
-		assertEquals(3, player1.pitList.get(2).numberOfStones());
-		assertEquals(0, player1.pitList.get(4).numberOfStones());
-		assertEquals(9, player1.myKalaha.numberOfStones());
-		assertEquals(2, player2.myKalaha.numberOfStones());
+		assertEquals(2, player1.pitList.get(1).myStones);
+		assertEquals(3, player1.pitList.get(2).myStones);
+		assertEquals(0, player1.pitList.get(4).myStones);
+		assertEquals(9, player1.myKalaha.myStones);
+		assertEquals(2, player2.myKalaha.myStones);
 		assertEquals(false, player1.isMyTurn);
 		assertTrue(player2.isMyTurn);
 	}
@@ -215,12 +225,12 @@ public class PlayerTest {
 		theBoard.setLayout(stonesLayout);
 		player1.selectPit(4);
 		
-		assertEquals(3, player1.pitList.get(0).numberOfStones());
-		assertEquals(3, player1.pitList.get(3).numberOfStones());
-		assertEquals(4, player1.pitList.get(4).numberOfStones());
-		assertEquals(4, player1.myKalaha.numberOfStones());
-		assertEquals(4, player2.pitList.get(5).numberOfStones());
-		assertEquals(0, player2.myKalaha.numberOfStones());
+		assertEquals(3, player1.pitList.get(0).myStones);
+		assertEquals(3, player1.pitList.get(3).myStones);
+		assertEquals(4, player1.pitList.get(4).myStones);
+		assertEquals(4, player1.myKalaha.myStones);
+		assertEquals(4, player2.pitList.get(5).myStones);
+		assertEquals(0, player2.myKalaha.myStones);
 		assertEquals(false, player1.isMyTurn);
 		assertTrue(player2.isMyTurn);
 	}

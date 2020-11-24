@@ -1,18 +1,12 @@
 package nl.sogyo.mancala.domain;
 
-import java.util.ArrayList;
-
 public abstract class Hole {
-	protected ArrayList<Stone> myStones;
+	protected int myStones;
 	protected Hole nextHole;
 	protected Player myOwner;
 	
-	int numberOfStones() { 
-		return myStones.size();
-	}
-	
-	void add(Stone extraStone) {
-		myStones.add(extraStone);
+	void add() {
+		myStones++;
 	}
 	
 	void setNextHole(Hole neighbor) {
@@ -23,5 +17,5 @@ public abstract class Hole {
 		myOwner = theOwner;
 	}
 	
-	abstract void receive(ArrayList<Stone> givenStones);
+	abstract void receive(int givenStones);
 }
