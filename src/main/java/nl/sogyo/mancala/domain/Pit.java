@@ -1,28 +1,29 @@
 package nl.sogyo.mancala.domain;
 
 public class Pit extends Hole {
-	
-	private int totalNrOfPits;
 
-	public Pit(int startStones, int nrOfPits) {
+	public Pit(int startStones, int totalPits) {
+		/**
+		 * Create the first pit, with a new Player
+		 * and start the pit-chain at its neighbour
+		 */
 		myOwner = new Player();
 		myOwner.isMyTurn = true;
 		myStones = 4;
-		totalNrOfPits = nrOfPits;
-		nextHole = new Pit(startStones, nrOfPits - 2, 
-				totalNrOfPits, myOwner, this);
+		nextHole = new Pit(startStones, totalPits - 1, 
+				totalPits, myOwner, this);
 	}
 	
-	public Pit(int startStones, int nrOfPits, int totalNrOfPits, 
+	public Pit(int startStones, int pitsToGo, int totalNrOfPits, 
 			Player theOwner, Pit initPit) {
 		/**
-		 * Create a pit with stones
+		 * Create an additional pit with stones
+		 * as long as additional pits need to be created
 		 */
 		myStones = startStones;
 		myOwner = theOwner;
-		this.totalNrOfPits = totalNrOfPits;
-		if (nrOfPits > 0) {
-			nextHole = new Pit(startStones, nrOfPits - 1, 
+		if (pitsToGo > 1) {
+			nextHole = new Pit(startStones, pitsToGo - 1, 
 					totalNrOfPits, myOwner, initPit);
 		}
 		else {
@@ -31,10 +32,13 @@ public class Pit extends Hole {
 		}
 	}
 	
-	public void passStones() {
+	public void passStones() throws Exception {
 		/**
-		 * Move pit's stones to neighbour
+		 * Give all pit's stones to neighbour
 		 */
+		if (myStones == 0) {
+			throw new IndexOutOfBoundsException("Not a valid move");
+		}
 		int temp = myStones;
 		myStones = 0;
 		nextHole.receive(temp);
@@ -42,7 +46,7 @@ public class Pit extends Hole {
 	
 	public void receive(int givenStones) {
 		/**
-		 * From a list of stones, take one and pass the list to neighbour
+		 * Take one stone and pass the rest to the neighbour
 		 * if possible.
 		 * If not, check pit's state and switch turns
 		 */
@@ -59,32 +63,34 @@ public class Pit extends Hole {
 
 	private void checkState() {
 		/**
-		 * Check if the pit was empty before the move and
-		 * the owner has the turn, to steal the opponents stones
+		 * If the pit was empty before the move and
+		 * the owner has the turn, 
+		 * tell the kalaha to steal the opponent's stones
 		 */
 		if (myStones == 1 && myOwner.isMyTurn) {
-			stealStones();
-		}		
+			// If the opposing pit is empty, the stone will return
+			myStones = nextHole.initiateStealing(myStones, 0);
+			}		
 	}
-
-	private void stealStones() {
+	
+	@Override
+	protected int initiateStealing(int nrOfStones, int distance) {
 		/**
-		 * Send all stones to the Kalaha (if opponent had stones)
-		 * and tell it to empty the opponent pit
+		 * Pass on an empty pit's stone and distance to kalaha
 		 */
-		myStones = nextHole.giveToKalaha(myStones, 0);
+		return nextHole.initiateStealing(nrOfStones, distance + 1);
 	}
 	
 	@Override
-	protected int giveToKalaha(int nrOfStones, int distance) {
-		return nextHole.giveToKalaha(nrOfStones, distance + 1);
-	}
-	
-	@Override
-	protected int getStones(int distance) {
+	protected int stealStones(int distance) {
+		/**
+		 * Pass on the call from kalaha to empty opposing pit
+		 * at same distance as initial empty pit
+		 */
 		if (distance > 0) {
-			return nextHole.getStones(distance - 1);
+			return nextHole.stealStones(distance - 1);
 		}
+		
 		int temp = myStones;
 		myStones = 0;
 		return temp;
@@ -92,6 +98,9 @@ public class Pit extends Hole {
 	
 	@Override
 	protected boolean emptySide() {
+		/**
+		 * Check if all pits up to the next kalaha are empty
+		 */
 		if (myStones == 0) {
 			return nextHole.emptySide();
 		}
@@ -100,9 +109,10 @@ public class Pit extends Hole {
 	
 	@Override
 	protected void setScore() {
-		int temp = myStones;
-		myStones = 0;
-		myOwner.score += temp;
+		/**
+		 * Give the amount of stones to the player's score
+		 */
+		myOwner.score += myStones;
 		nextHole.setScore();
 	}
 }
