@@ -9,13 +9,26 @@ public abstract class Hole {
 		myStones++;
 	}
 	
-	void setNextHole(Hole neighbor) {
-		nextHole = neighbor;
+	public Hole neighbour() {
+		return nextHole;
 	}
 	
-	void setMyOwner(Player theOwner) {
-		myOwner = theOwner;
+	public Hole neighbour(int nthNghb) {
+		if (nthNghb > 1) {
+			return nextHole.neighbour(nthNghb - 1);
+		}
+		return nextHole;
 	}
 	
 	abstract void receive(int givenStones);
+
+	protected abstract void passStones();
+
+	protected abstract int giveToKalaha(int nrOfStones, int distance);
+
+	protected abstract int getStones(int distance);
+
+	protected abstract boolean emptySide();
+	
+	protected abstract void setScore();
 }
