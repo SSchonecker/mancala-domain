@@ -177,15 +177,19 @@ public class PitTest {
 	public void selectWrongPit() {
 		/**
 		 * Ensure the correct Exceptions are thrown
-		 * if a kalaha or empty pit is selected
+		 * if a kalaha, empty pit or opponent's pit is selected
 		 * (these can be dealt with later on)
 		 */
-		int[] stonesLayout = {4,4,4,4,4,0,1,5,5,5,4,4,4,0};
+		int[] stonesLayout = {4,4,4,4,4,0,1,5,5,0,4,4,4,5};
 		setLayout(stonesLayout);
 		Assertions.assertThrows(IndexOutOfBoundsException.class, 
-				() -> initPit.neighbour(6).passStones());
+				() -> initPit.neighbour(6).passStones()); // The kalaha
 		Assertions.assertThrows(IndexOutOfBoundsException.class, 
-				() -> initPit.neighbour(5).passStones());
+				() -> initPit.neighbour(5).passStones()); // Empty pit
+		Assertions.assertThrows(IndexOutOfBoundsException.class, 
+				() -> initPit.neighbour(7).passStones()); // Opponents pit
+		Assertions.assertThrows(IndexOutOfBoundsException.class, 
+				() -> initPit.neighbour(9).passStones()); // Opponents empty pit
 	}
 	
 	@Test

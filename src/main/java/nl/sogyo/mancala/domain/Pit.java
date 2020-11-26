@@ -36,7 +36,7 @@ public class Pit extends Hole {
 		/**
 		 * Give all pit's stones to neighbour
 		 */
-		if (myStones == 0) {
+		if (myStones == 0 || !myOwner.isMyTurn) {
 			throw new IndexOutOfBoundsException("Not a valid move");
 		}
 		int temp = myStones;
