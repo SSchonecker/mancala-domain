@@ -2,8 +2,7 @@ package nl.sogyo.mancala.domain;
 
 public class Kalaha extends Hole {
 
-	public Kalaha(int startStones, int totalNrOfPits, Player theOwner, 
-			Pit initPit) {
+	Kalaha(int totalNrOfPits, Player theOwner, Pit initPit) {
 		/**
 		 * The Kalaha is constructed without stones.
 		 * The first kalaha makes the second side with a new player,
@@ -17,8 +16,7 @@ public class Kalaha extends Hole {
 			myOwner.nextPlayer = theNewOwner;
 			theNewOwner.nextPlayer = myOwner;
 			
-			nextHole = new Pit(startStones, totalNrOfPits, 
-					totalNrOfPits, theNewOwner, initPit);
+			nextHole = new Pit(totalNrOfPits, theNewOwner, initPit);
 		}
 		else {
 			nextHole = initPit;
@@ -46,7 +44,12 @@ public class Kalaha extends Hole {
 	}
 	
 	@Override
-	protected int initiateStealing(int nrOfStones, int distance) {
+	int initiateStealing(int nrOfStones, int distance) {
+		/**
+		 * Get the stones of the opponents hole, check if there are any,
+		 * send back the stone to the initiating pit
+		 * or add all stones to self
+		 */
 		int stonesStolen = nextHole.stealStones(distance);
 		if (stonesStolen == 0) {
 			return nrOfStones;
@@ -57,12 +60,15 @@ public class Kalaha extends Hole {
 	}
 	
 	@Override
-	protected boolean emptySide() {
+	boolean emptySide() {
+		/**
+		 * If a pit.emptySide()-sequence gets here, the side is empty
+		 */
 		return true;
 	}
 	
 	@Override
-	protected void setScore() {
+	void setScore() {
 		myOwner.score += myStones;
 		if (nextHole.myOwner.score == 0) {
 			nextHole.setScore();
@@ -76,7 +82,7 @@ public class Kalaha extends Hole {
 	}
 	
 	@Override
-	protected int stealStones(int distance) {
+	int stealStones(int distance) {
 		return 0;
 	}
 

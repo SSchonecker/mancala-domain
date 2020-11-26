@@ -4,7 +4,7 @@ public class Player {
 	
 	boolean isMyTurn = false;
 	Player nextPlayer;
-	public int score = 0;
+	int score = 0;
 	
 	void switchTurn() {
 		isMyTurn = !isMyTurn;

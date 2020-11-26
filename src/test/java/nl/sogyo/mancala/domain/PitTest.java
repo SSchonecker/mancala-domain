@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ public class PitTest {
 	
 	@BeforeEach
 	private void setPit() {
-		initPit = new Pit(4, 6);
+		initPit = new Pit();
 	}
 	
 	private void setLayout(int[] stonesLayout) {
@@ -182,13 +182,13 @@ public class PitTest {
 		 */
 		int[] stonesLayout = {4,4,4,4,4,0,1,5,5,0,4,4,4,5};
 		setLayout(stonesLayout);
-		Assertions.assertThrows(IndexOutOfBoundsException.class, 
+		assertThrows(IndexOutOfBoundsException.class, 
 				() -> initPit.neighbour(6).passStones()); // The kalaha
-		Assertions.assertThrows(IndexOutOfBoundsException.class, 
+		assertThrows(IndexOutOfBoundsException.class, 
 				() -> initPit.neighbour(5).passStones()); // Empty pit
-		Assertions.assertThrows(IndexOutOfBoundsException.class, 
+		assertThrows(IndexOutOfBoundsException.class, 
 				() -> initPit.neighbour(7).passStones()); // Opponents pit
-		Assertions.assertThrows(IndexOutOfBoundsException.class, 
+		assertThrows(IndexOutOfBoundsException.class, 
 				() -> initPit.neighbour(9).passStones()); // Opponents empty pit
 	}
 	

@@ -1,34 +1,33 @@
 package nl.sogyo.mancala.domain;
 
 public class Pit extends Hole {
+	
+	private final int START_STONES = 4;
+	private final int TOTAL_PITS = 6;
 
-	public Pit(int startStones, int totalPits) {
+	public Pit() {
 		/**
 		 * Create the first pit, with a new Player
 		 * and start the pit-chain at its neighbour
 		 */
 		myOwner = new Player();
 		myOwner.isMyTurn = true;
-		myStones = 4;
-		nextHole = new Pit(startStones, totalPits - 1, 
-				totalPits, myOwner, this);
+		myStones = START_STONES;
+		nextHole = new Pit(TOTAL_PITS - 1, myOwner, this);
 	}
 	
-	public Pit(int startStones, int pitsToGo, int totalNrOfPits, 
-			Player theOwner, Pit initPit) {
+	Pit(int pitsToGo, Player theOwner, Pit initPit) {
 		/**
 		 * Create an additional pit with stones
 		 * as long as additional pits need to be created
 		 */
-		myStones = startStones;
+		myStones = START_STONES;
 		myOwner = theOwner;
 		if (pitsToGo > 1) {
-			nextHole = new Pit(startStones, pitsToGo - 1, 
-					totalNrOfPits, myOwner, initPit);
+			nextHole = new Pit(pitsToGo - 1, myOwner, initPit);
 		}
 		else {
-			nextHole = new Kalaha(startStones, totalNrOfPits, 
-					myOwner, initPit);
+			nextHole = new Kalaha(TOTAL_PITS, myOwner, initPit);
 		}
 	}
 	
@@ -44,7 +43,7 @@ public class Pit extends Hole {
 		nextHole.receive(temp);
 	}
 	
-	public void receive(int givenStones) {
+	void receive(int givenStones) {
 		/**
 		 * Take one stone and pass the rest to the neighbour
 		 * if possible.
@@ -74,7 +73,7 @@ public class Pit extends Hole {
 	}
 	
 	@Override
-	protected int initiateStealing(int nrOfStones, int distance) {
+	int initiateStealing(int nrOfStones, int distance) {
 		/**
 		 * Pass on an empty pit's stone and distance to kalaha
 		 */
@@ -82,7 +81,7 @@ public class Pit extends Hole {
 	}
 	
 	@Override
-	protected int stealStones(int distance) {
+	int stealStones(int distance) {
 		/**
 		 * Pass on the call from kalaha to empty opposing pit
 		 * at same distance as initial empty pit
@@ -97,7 +96,7 @@ public class Pit extends Hole {
 	}
 	
 	@Override
-	protected boolean emptySide() {
+	public boolean emptySide() {
 		/**
 		 * Check if all pits up to the next kalaha are empty
 		 */
@@ -108,7 +107,7 @@ public class Pit extends Hole {
 	}
 	
 	@Override
-	protected void setScore() {
+	public void setScore() {
 		/**
 		 * Give the amount of stones to the player's score
 		 */

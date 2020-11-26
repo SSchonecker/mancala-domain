@@ -1,9 +1,9 @@
 package nl.sogyo.mancala.domain;
 
-public abstract class Hole {
-	protected int myStones;
-	protected Hole nextHole;
-	protected Player myOwner;
+abstract class Hole {
+	int myStones;
+	Hole nextHole;
+	Player myOwner;
 	
 	public Hole neighbour() {
 		return nextHole;
@@ -21,13 +21,13 @@ public abstract class Hole {
 	
 	abstract void receive(int givenStones);
 
-	protected abstract void passStones() throws Exception;
+	abstract void passStones() throws Exception;
 
-	protected abstract int initiateStealing(int nrOfStones, int distance);
+	abstract int initiateStealing(int nrOfStones, int distance);
 
-	protected abstract int stealStones(int distance);
+	abstract int stealStones(int distance);
 
-	protected abstract boolean emptySide();
+	abstract boolean emptySide();
 	
-	protected abstract void setScore();
+	abstract void setScore();
 }
