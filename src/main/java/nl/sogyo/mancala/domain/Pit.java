@@ -6,21 +6,13 @@ public class Pit extends Hole {
 	private final int TOTAL_PITS = 6;
 
 	public Pit() {
-		/**
-		 * Create the first pit, with a new Player
-		 * and start the pit-chain at its neighbour
-		 */
 		myOwner = new Player();
-		myOwner.isMyTurn = true;
+		myOwner.getTurn();
 		myStones = START_STONES;
 		nextHole = new Pit(TOTAL_PITS - 1, myOwner, this);
 	}
 	
 	Pit(int pitsToGo, Player theOwner, Pit initPit) {
-		/**
-		 * Create an additional pit with stones
-		 * as long as additional pits need to be created
-		 */
 		myStones = START_STONES;
 		myOwner = theOwner;
 		if (pitsToGo > 1) {
@@ -31,26 +23,21 @@ public class Pit extends Hole {
 		}
 	}
 	
-	public void passStones() throws Exception {
-		/**
-		 * Give all pit's stones to neighbour
-		 */
-		if (myStones == 0 || !myOwner.isMyTurn) {
-			throw new IndexOutOfBoundsException("Not a valid move");
+	public boolean passStones() {
+		if (myStones == 0 || !myOwner.hasTurn()) {
+			return false;
 		}
+		
 		int temp = myStones;
 		myStones = 0;
 		nextHole.receive(temp);
+		return true;
 	}
 	
 	void receive(int givenStones) {
-		/**
-		 * Take one stone and pass the rest to the neighbour
-		 * if possible.
-		 * If not, check pit's state and switch turns
-		 */
 		myStones++;
 		givenStones--;
+		
 		if (givenStones > 0) {
 			nextHole.receive(givenStones);
 		}
@@ -61,31 +48,19 @@ public class Pit extends Hole {
 	}
 
 	private void checkState() {
-		/**
-		 * If the pit was empty before the move and
-		 * the owner has the turn, 
-		 * tell the kalaha to steal the opponent's stones
-		 */
-		if (myStones == 1 && myOwner.isMyTurn) {
+		if (myStones == 1 && myOwner.hasTurn()) {
 			// If the opposing pit is empty, the stone will return
 			myStones = nextHole.initiateStealing(myStones, 0);
-			}		
+		}		
 	}
 	
 	@Override
 	int initiateStealing(int nrOfStones, int distance) {
-		/**
-		 * Pass on an empty pit's stone and distance to kalaha
-		 */
 		return nextHole.initiateStealing(nrOfStones, distance + 1);
 	}
 	
 	@Override
 	int stealStones(int distance) {
-		/**
-		 * Pass on the call from kalaha to empty opposing pit
-		 * at same distance as initial empty pit
-		 */
 		if (distance > 0) {
 			return nextHole.stealStones(distance - 1);
 		}
@@ -97,9 +72,6 @@ public class Pit extends Hole {
 	
 	@Override
 	public boolean emptySide() {
-		/**
-		 * Check if all pits up to the next kalaha are empty
-		 */
 		if (myStones == 0) {
 			return nextHole.emptySide();
 		}
@@ -108,10 +80,7 @@ public class Pit extends Hole {
 	
 	@Override
 	public void setScore() {
-		/**
-		 * Give the amount of stones to the player's score
-		 */
-		myOwner.score += myStones;
+		myOwner.addToScore(myStones);
 		nextHole.setScore();
 	}
 }

@@ -3,18 +3,13 @@ package nl.sogyo.mancala.domain;
 public class Kalaha extends Hole {
 
 	Kalaha(int totalNrOfPits, Player theOwner, Pit initPit) {
-		/**
-		 * The Kalaha is constructed without stones.
-		 * The first kalaha makes the second side with a new player,
-		 * the second kalaha links to the first pit
-		 */
 		myStones = 0;
 		myOwner = theOwner;
 		
-		if (myOwner.nextPlayer == null) {
+		if (myOwner.getOpponent() == null) {
 			Player theNewOwner = new Player();
-			myOwner.nextPlayer = theNewOwner;
-			theNewOwner.nextPlayer = myOwner;
+			myOwner.setOpponent(theNewOwner);
+			theNewOwner.setOpponent(myOwner);
 			
 			nextHole = new Pit(totalNrOfPits, theNewOwner, initPit);
 		}
@@ -25,12 +20,7 @@ public class Kalaha extends Hole {
 
 	@Override
 	void receive(int givenStones) {
-		/**
-		 * Take one stone if the Kalaha's owner is at play,
-		 * pass on the (remaining) stones
-		 * or let the player keep their turn
-		 */
-		if (myOwner.isMyTurn) {
+		if (myOwner.hasTurn()) {
 			givenStones--;
 			myStones++;}
 		
@@ -38,18 +28,12 @@ public class Kalaha extends Hole {
 			nextHole.receive(givenStones);
 		}
 		else {
-			myOwner.isMyTurn = true;
+			myOwner.getTurn();
 		}
-		
 	}
 	
 	@Override
 	int initiateStealing(int nrOfStones, int distance) {
-		/**
-		 * Get the stones of the opponents hole, check if there are any,
-		 * send back the stone to the initiating pit
-		 * or add all stones to self
-		 */
 		int stonesStolen = nextHole.stealStones(distance);
 		if (stonesStolen == 0) {
 			return nrOfStones;
@@ -61,24 +45,21 @@ public class Kalaha extends Hole {
 	
 	@Override
 	boolean emptySide() {
-		/**
-		 * If a pit.emptySide()-sequence gets here, the side is empty
-		 */
 		return true;
 	}
 	
 	@Override
 	void setScore() {
-		myOwner.score += myStones;
-		if (nextHole.myOwner.score == 0) {
+		myOwner.addToScore(myStones);
+		if (nextHole.getOwner().getScore() == 0) {
 			nextHole.setScore();
 		}
 	}
 	
 	// The following methods should not be called on kalaha's
 	@Override
-	public void passStones() throws Exception {
-		throw new IndexOutOfBoundsException("Not a valid move.");
+	public boolean passStones() {
+		return false;
 	}
 	
 	@Override
