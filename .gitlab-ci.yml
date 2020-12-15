@@ -1,3 +1,5 @@
+image: maven:latest
+
 stages:
   - test
 
@@ -18,10 +20,3 @@ maven_build:
   script:
     - Write-Host "Building project with maven"
     - mvn verify
-
-test:
-  stage: test
-  tags:
-    - maven
-  script:
-    - mvn test
