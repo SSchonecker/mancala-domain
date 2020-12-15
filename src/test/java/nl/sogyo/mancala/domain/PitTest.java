@@ -33,7 +33,7 @@ public class PitTest {
 		 * kalaha's at the expected positions
 		 * and the return to the initial pit.
 		 */
-		assertEquals(4, initPit.myStones);
+		assertEquals(3, initPit.myStones);
 		assertEquals(4, initPit.neighbour(7).myStones);
 		
 		assertEquals(initPit.nextHole, initPit.neighbour());
