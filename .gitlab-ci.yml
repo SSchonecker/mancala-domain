@@ -27,6 +27,7 @@ coverage-convert:
   stage: visualize
   image: haynes/jacoco2cobertura:1.0.4
   script:
+    - ls
     # convert report from jacoco to cobertura
     - py /opt/cover2cover.py target/site/jacoco/jacoco.xml src/main/java > target/site/cobertura.xml
     # read the <source></source> tag and prepend the path to every filename attribute
