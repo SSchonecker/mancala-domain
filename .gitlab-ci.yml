@@ -25,7 +25,7 @@ maven_test:
 
 coverage-convert:
   stage: visualize
-  image: python:latest
+  image: haynes/jacoco2cobertura:1.0.4
   script:
     # convert report from jacoco to cobertura
     - py /opt/cover2cover.py target/site/jacoco/jacoco.xml src/main/java > target/site/cobertura.xml
