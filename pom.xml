@@ -44,6 +44,9 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.6</version>
+				<configuration>
+					<destFile>target/jacoco.xml</destFile>
+				</configuration>
 				<executions>
 					<!-- to avoid bugs in some situations -->
 					<execution>
