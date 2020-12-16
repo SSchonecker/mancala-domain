@@ -10,7 +10,7 @@ maven_test:
   script:
     - Write-Host "Building project with maven"
     - mvn verify
-    - mvn jacoco:report
+    - cat target/site/jacoco/index.html
   artifacts:
     when: always
     reports:
