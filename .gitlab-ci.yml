@@ -1,4 +1,6 @@
-image: maven:latest
+image: 
+  - maven:latest
+  - python:latest
 
 stages:
   - test
