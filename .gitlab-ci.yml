@@ -28,9 +28,9 @@ coverage-convert:
   script:
     - ls
     # convert report from jacoco to cobertura
-    - py /opt/cover2cover.py target/site/jacoco/jacoco.xml src/main/java > target/site/cobertura.xml
+    - py cover2cover.py target/site/jacoco/jacoco.xml src/main/java > target/site/cobertura.xml
     # read the <source></source> tag and prepend the path to every filename attribute
-    - py /opt/source2filename.py target/site/cobertura.xml
+    - py source2filename.py target/site/cobertura.xml
   needs: ["maven_test"]
   dependencies:
     - maven_test
