@@ -16,5 +16,4 @@ maven_test:
       junit:
         - target/surefire-reports/TEST-*.xml
         #- target/failsafe-reports/TEST-*.xml
-    paths:
-      - target/jacoco.exec
+    paths: [target/surefire-reports/TEST-*.xml]
