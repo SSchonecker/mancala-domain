@@ -1,11 +1,10 @@
-image: maven:latest
-
 stages:
   - test
   - visualize
 
 maven_test:
   stage: test
+  image: maven:latest
   tags:
     - maven
   script:
