@@ -15,4 +15,5 @@ maven_test:
     reports:
       junit:
         - target/surefire-reports/TEST-*.xml
-        - target/failsafe-reports/TEST-*.xml
+        #- target/failsafe-reports/TEST-*.xml
+    paths: [target/surefire-reports/TEST-*.xml]
