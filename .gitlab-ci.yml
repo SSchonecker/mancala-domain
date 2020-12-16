@@ -19,4 +19,4 @@ maven_test:
         #- target/failsafe-reports/TEST-*.xml
     paths: 
       - target/surefire-reports/TEST-nl.sogyo.mancala.domain.PitTest.xml
-      - target/jacoco.exec
+      - target/jacoco.xml
