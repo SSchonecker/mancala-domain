@@ -9,7 +9,7 @@ maven_test:
     - maven
   script:
     - Write-Host "Building project with maven"
-    - mvn $MAVEN_CLI_OPTS clean org.jacoco:jacoco-maven-plugin:prepare-agent test jacoco:report
+    - mvn clean verify
   artifacts:
     when: always
     reports:
@@ -23,16 +23,6 @@ maven_test:
 coverage-convert:
   stage: visualize
   script:
-    - ls
-    - cd target
-    - ls
-    - cd site
-    - ls
-    - cd jacoco
-    - cat jacoco.xml
-    - cd ..
-    - cd ..
-    - cd ..
     # convert report from jacoco to cobertura
     - py cover2cover.py target/site/jacoco/jacoco.xml src/main/java > target/site/cobertura.xml
     # read the <source></source> tag and prepend the path to every filename attribute
