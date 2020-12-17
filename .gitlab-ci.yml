@@ -10,6 +10,7 @@ maven_test:
   script:
     - Write-Host "Building project with maven"
     - mvn clean verify
+    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered Total"; print 100*covered/instructions, "% covered" }' target/jacoco/jacoco.csv
   artifacts:
     when: always
     reports:
@@ -20,16 +21,16 @@ maven_test:
       - target/surefire-reports/TEST-nl.sogyo.mancala.domain.PitTest.xml
       - target/site/jacoco/jacoco.xml
 
-coverage-convert:
-  stage: visualize
-  script:
-    # convert report from jacoco to cobertura
-    - py cover2cover.py target/site/jacoco/jacoco.xml src/main/java > target/site/cobertura.xml
-    # read the <source></source> tag and prepend the path to every filename attribute
-    - py source2filename.py target/site/cobertura.xml
-  needs: ["maven_test"]
-  dependencies:
-    - maven_test
-  artifacts:
-    reports:
-      cobertura: target/site/cobertura.xml
+#coverage-convert:
+#  stage: visualize
+#  script:
+#    # convert report from jacoco to cobertura
+#    - py cover2cover.py target/site/jacoco/jacoco.xml src/main/java > target/site/cobertura.xml
+#    # read the <source></source> tag and prepend the path to every filename attribute
+#    - py source2filename.py target/site/cobertura.xml
+#  needs: ["maven_test"]
+#  dependencies:
+#    - maven_test
+#  artifacts:
+#    reports:
+#      cobertura: target/site/cobertura.xml
