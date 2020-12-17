@@ -10,7 +10,8 @@ maven_test:
   script:
     - Write-Host "Building project with maven"
     - mvn clean verify
-    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered Total"; print 100*covered/instructions, "% covered" }' target/jacoco/jacoco.csv
+    #- awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered Total"; print 100*covered/instructions, "% covered" }' target/jacoco/jacoco.csv
+    - Get-Content \target\site\jacoco\jacoco.csv | %{ [int]$instructions+=$_.Split(',')[4]+$_.Split(',')[5]; [int]$covered+=$_.Split(',')[5]; } ; Write-Host "$covered / $instructions instructions covered. Total $(100*$covered/$instructions)% covered"
   artifacts:
     when: always
     reports:
