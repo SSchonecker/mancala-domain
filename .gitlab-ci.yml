@@ -46,5 +46,5 @@ code_quality:
   stage: checkCQ
   tags:
     - docker
-  variables:
-    CODE_QUALITY_IMAGE: "registry.example.com/codequality-fork:latest"
+  artifacts:
+    paths: [gl-code-quality-report.json]
