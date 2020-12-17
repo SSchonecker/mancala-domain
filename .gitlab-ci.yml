@@ -1,6 +1,10 @@
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
 stages:
   - test
-  - visualize
+  #- visualize
+  - checkCQ
 
 maven_test:
   stage: test
@@ -37,3 +41,8 @@ maven_test:
 #  artifacts:
 #    reports:
 #      cobertura: target/site/cobertura.xml
+
+code_quality:
+  stage: checkCQ
+  variables:
+    CODE_QUALITY_IMAGE: "registry.example.com/codequality-fork:latest"
