@@ -46,5 +46,3 @@ code_quality:
   stage: checkCQ
   tags:
     - docker
-  artifacts:
-    paths: [gl-code-quality-report.json]
