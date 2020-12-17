@@ -11,7 +11,9 @@ maven_test:
     - Write-Host "Building project with maven"
     - mvn clean verify
     #- awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered Total"; print 100*covered/instructions, "% covered" }' target/jacoco/jacoco.csv
-    - Get-Content .\target\site\jacoco\jacoco.csv | %{ [int]$instructions+=$_.Split(',')[4]+$_.Split(',')[5]; [int]$covered+=$_.Split(',')[5]; } ; Write-Host "$covered / $instructions instructions covered. Total $(100*$covered/$instructions)% covered"
+    - $missed=0
+    - $covered=0
+    - Get-Content .\target\site\jacoco\jacoco.csv | select-object -skip 1 | %{ [int]$missed+=$_.Split(',')[3]; [int]$covered+=$_.Split(',')[4]; } ; Write-Host "$covered / $($missed+$covered) instructions covered. Total $(100*$covered/$($missed+$covered))% covered"
   artifacts:
     when: always
     reports:
