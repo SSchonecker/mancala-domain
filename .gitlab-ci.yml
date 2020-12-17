@@ -44,6 +44,7 @@ maven_test:
 
 code_quality:
   stage: checkCQ
-  tags: docker
+  tags:
+    - docker
   variables:
     CODE_QUALITY_IMAGE: "registry.example.com/codequality-fork:latest"
