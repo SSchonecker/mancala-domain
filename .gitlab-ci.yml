@@ -1,15 +1,15 @@
 #include:
 #  - template: Code-Quality.gitlab-ci.yml
-image: docker:latest
 
 before_script:
-  #- docker info
+  - docker info
   - docker login -u $DOCKER_USER_NAME -p $DOCKER_ACCESS_TOKEN
 
 stages:
   - build
   - test
   #- checkCQ
+  - cleanup
   
 build_image:
   stage: build
@@ -48,3 +48,10 @@ maven_test:
 #  stage: checkCQ
 #  tags:
 #    - docker
+
+logout-cleanup:
+  stage: cleanup
+  tags: 
+    - docker
+  script:
+    - docker logout
