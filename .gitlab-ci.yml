@@ -5,9 +5,6 @@ before_script:
   - docker info
   - docker login -u $DOCKER_USER_NAME -p $DOCKER_ACCESS_TOKEN
 
-after_script:
-  - docker logout
-
 stages:
   - build
   - test
@@ -20,6 +17,8 @@ build_image:
   script:
     - docker build -t docker4sschonecker/sschonecker-repo:mancalaimage .
     - docker push docker4sschonecker/sschonecker-repo:mancalaimage
+  after_script:
+    - docker logout
 
 maven_test:
   stage: test
