@@ -1,11 +1,10 @@
-include:
-  - template: Code-Quality.gitlab-ci.yml
+#include:
+#  - template: Code-Quality.gitlab-ci.yml
 
 stages:
   - build
   - test
-  #- visualize
-  - checkCQ
+  #- checkCQ
   
 build_image:
   stage: build
@@ -13,17 +12,20 @@ build_image:
     - docker
   script:
     - docker info
-    - docker build -t myimage .
+    - docker build -t mancalaimage .
+    - docker push docker4sschonecker/sschonecker-repo:mancalaimage
 
 maven_test:
   stage: test
-  image: myimage
   tags:
     - docker
+  needs:
+    - build_image
   script:
-    - echo "Building project with maven"
-    - mvn clean verify
-    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered Total"; print 100*covered/instructions, "% covered" }' target/jacoco/jacoco.csv
+    - docker pull docker4sschonecker/sschonecker-repo:mancalaimage
+    - docker exec echo "Building project with maven"
+    - docker exec mvn clean verify
+    - docker exec awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered Total"; print 100*covered/instructions, "% covered" }' target/jacoco/jacoco.csv
     #- $missed=0
     #- $covered=0
     #- Get-Content .\target\site\jacoco\jacoco.csv | select-object -skip 1 | %{ [int]$missed+=$_.Split(',')[3]; [int]$covered+=$_.Split(',')[4]; } ; Write-Host "$covered / $($missed+$covered) instructions covered. Total $(100*$covered/$($missed+$covered))% covered"
@@ -32,26 +34,11 @@ maven_test:
     reports:
       junit:
         - target/surefire-reports/TEST-*.xml
-        #- target/failsafe-reports/TEST-*.xml
     paths: 
       - target/surefire-reports/TEST-nl.sogyo.mancala.domain.PitTest.xml
       - target/site/jacoco/jacoco.xml
 
-#coverage-convert:
-#  stage: visualize
-#  script:
-#    # convert report from jacoco to cobertura
-#    - py cover2cover.py target/site/jacoco/jacoco.xml src/main/java > target/site/cobertura.xml
-#    # read the <source></source> tag and prepend the path to every filename attribute
-#    - py source2filename.py target/site/cobertura.xml
-#  needs: ["maven_test"]
-#  dependencies:
-#    - maven_test
-#  artifacts:
-#    reports:
-#      cobertura: target/site/cobertura.xml
-
-code_quality:
-  stage: checkCQ
-  tags:
-    - docker
+#code_quality:
+#  stage: checkCQ
+#  tags:
+#    - docker
