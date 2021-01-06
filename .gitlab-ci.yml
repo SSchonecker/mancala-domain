@@ -12,7 +12,7 @@ build_image:
     - docker
   script:
     - docker info
-    - docker build -t mancalaimage .
+    - docker build -t docker4sschonecker/sschonecker-repo:mancalaimage .
     - docker push docker4sschonecker/sschonecker-repo:mancalaimage
 
 maven_test:
