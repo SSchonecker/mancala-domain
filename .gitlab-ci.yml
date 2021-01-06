@@ -3,7 +3,7 @@
 image: docker:latest
 
 before_script:
-  - docker info
+  #- docker info
   - docker login -u $DOCKER_USER_NAME -p $DOCKER_ACCESS_TOKEN
 
 stages:
