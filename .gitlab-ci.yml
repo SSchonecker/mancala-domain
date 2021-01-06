@@ -1,6 +1,7 @@
 #include:
 #  - template: Code-Quality.gitlab-ci.yml
 before_script:
+  - net localgroup docker-users "gitlab-runner" /ADD
   - docker info
 
 stages:
