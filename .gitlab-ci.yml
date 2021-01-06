@@ -1,10 +1,13 @@
 #include:
 #  - template: Code-Quality.gitlab-ci.yml
+before_script:
+  - docker info
 
 stages:
   - test
   #- visualize
   #- checkCQ
+  - build
 
 maven_test:
   stage: test
@@ -46,3 +49,8 @@ maven_test:
 #  stage: checkCQ
 #  tags:
 #    - docker
+
+build_image:
+  stage: build
+  script:
+    - docker build .
