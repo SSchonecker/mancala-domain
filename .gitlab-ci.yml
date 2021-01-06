@@ -1,9 +1,5 @@
 #include:
 #  - template: Code-Quality.gitlab-ci.yml
-before_script:
-  - NET LOCALGROUP docker-users
-  - NET LOCALGROUP docker-users gitlab-runner-windows-amd64 /ADD
-  - docker info
 
 stages:
   - test
@@ -54,5 +50,7 @@ maven_test:
 
 build_image:
   stage: build
+  tags: docker
   script:
+    - docker info
     - docker build .
