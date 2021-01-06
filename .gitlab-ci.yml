@@ -29,8 +29,9 @@ docker_container:
     - docker pull docker4sschonecker/sschonecker-repo:mancalaimage
     - echo "Trying out how to get containers running"
     - docker run --name silkes-container mancalaimage
-    - docker ps
+    - docker ps -all
     - docker rm -f silkes-container
+    - docker ps -all
   
 
 maven_test:
