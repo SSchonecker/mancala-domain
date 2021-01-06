@@ -10,6 +10,7 @@ after_script:
 
 stages:
   - build
+  - dockertry
   - test
   
 build_image:
@@ -19,6 +20,18 @@ build_image:
   script:
     - docker build -t docker4sschonecker/sschonecker-repo:mancalaimage .
     - docker push docker4sschonecker/sschonecker-repo:mancalaimage
+
+docker_container:
+  stage: dockertry
+  tags:
+    -docker
+  script:
+    - docker pull docker4sschonecker/sschonecker-repo:mancalaimage
+    - echo "Trying out how to get containers running"
+    - docker run --name silkes-container mancalaimage
+    - docker ps
+    - docker rm -f silkes-container
+  
 
 maven_test:
   stage: test
