@@ -1,10 +1,10 @@
-include:
-  - template: Code-Quality.gitlab-ci.yml
+#include:
+#  - template: Code-Quality.gitlab-ci.yml
 
 stages:
   - test
   #- visualize
-  - checkCQ
+  #- checkCQ
 
 maven_test:
   stage: test
@@ -42,10 +42,7 @@ maven_test:
 #    reports:
 #      cobertura: target/site/cobertura.xml
 
-code_quality:
-  stage: checkCQ
-  tags:
-    - docker
-  artifacts:
-    reports:
-      codequality: gl-code-quality-report.json
+#code_quality:
+#  stage: checkCQ
+#  tags:
+#    - docker
