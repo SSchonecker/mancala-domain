@@ -50,7 +50,8 @@ maven_test:
 
 build_image:
   stage: build
-  tags: docker
+  tags:
+    - docker
   script:
     - docker info
     - docker build .
