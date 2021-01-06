@@ -5,11 +5,12 @@ before_script:
   - docker info
   - docker login -u $DOCKER_USER_NAME -p $DOCKER_ACCESS_TOKEN
 
+after_script:
+  - docker logout
+
 stages:
   - build
   - test
-  #- checkCQ
-  - cleanup
   
 build_image:
   stage: build
@@ -18,8 +19,6 @@ build_image:
   script:
     - docker build -t docker4sschonecker/sschonecker-repo:mancalaimage .
     - docker push docker4sschonecker/sschonecker-repo:mancalaimage
-  after_script:
-    - docker logout
 
 maven_test:
   stage: test
@@ -29,9 +28,9 @@ maven_test:
     - build_image
   script:
     - docker pull docker4sschonecker/sschonecker-repo:mancalaimage
-    - docker exec echo "Building project with maven"
-    - docker exec mvn clean verify
-    - docker exec awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered Total"; print 100*covered/instructions, "% covered" }' target/jacoco/jacoco.csv
+    - echo "Building project with maven"
+    - mvn clean verify
+    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered Total"; print 100*covered/instructions, "% covered" }' target/jacoco/jacoco.csv
     #- $missed=0
     #- $covered=0
     #- Get-Content .\target\site\jacoco\jacoco.csv | select-object -skip 1 | %{ [int]$missed+=$_.Split(',')[3]; [int]$covered+=$_.Split(',')[4]; } ; Write-Host "$covered / $($missed+$covered) instructions covered. Total $(100*$covered/$($missed+$covered))% covered"
@@ -48,10 +47,3 @@ maven_test:
 #  stage: checkCQ
 #  tags:
 #    - docker
-
-logout-cleanup:
-  stage: cleanup
-  tags: 
-    - docker
-  script:
-    - docker logout
