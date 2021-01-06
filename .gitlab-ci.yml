@@ -24,7 +24,7 @@ build_image:
 docker_container:
   stage: dockertry
   tags:
-    -docker
+    - docker
   script:
     - docker pull docker4sschonecker/sschonecker-repo:mancalaimage
     - echo "Trying out how to get containers running"
