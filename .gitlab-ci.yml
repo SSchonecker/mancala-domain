@@ -13,11 +13,11 @@ build_image:
     - docker
   script:
     - docker info
-    - docker build -t myImage .
+    - docker build -t myimage .
 
 maven_test:
   stage: test
-  image: myImage
+  image: myimage
   tags:
     - docker
   script:
