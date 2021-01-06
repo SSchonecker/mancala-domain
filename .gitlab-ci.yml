@@ -3,7 +3,7 @@
 
 before_script:
   - docker info
-  - docker login -u $DOCKER_USER_NAME
+  - docker login -u $DOCKER_USER_NAME -p $DOCKER_ACCESS_TOKEN
 
 after_script:
   - docker logout
