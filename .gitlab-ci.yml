@@ -1,7 +1,7 @@
 #include:
 #  - template: Code-Quality.gitlab-ci.yml
 before_script:
-  - NET LOCALGROUP docker-users /ADD
+  - NET LOCALGROUP docker-users
   - NET LOCALGROUP docker-users gitlab-runner-windows-amd64 /ADD
   - docker info
 
