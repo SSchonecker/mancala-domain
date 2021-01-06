@@ -1,6 +1,13 @@
 #include:
 #  - template: Code-Quality.gitlab-ci.yml
 
+before_script:
+  - docker info
+  - docker login -u $DOCKER_USER_NAME
+
+after_script:
+  - docker logout
+
 stages:
   - build
   - test
@@ -11,7 +18,6 @@ build_image:
   tags:
     - docker
   script:
-    - docker info
     - docker build -t docker4sschonecker/sschonecker-repo:mancalaimage .
     - docker push docker4sschonecker/sschonecker-repo:mancalaimage
 
