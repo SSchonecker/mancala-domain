@@ -1,5 +1,6 @@
 #include:
 #  - template: Code-Quality.gitlab-ci.yml
+image: docker:latest
 
 before_script:
   - docker info
