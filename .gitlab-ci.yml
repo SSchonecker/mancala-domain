@@ -10,17 +10,22 @@ stages:
   
 first_build:
   stage: compile
+  tag:
+    - maven
   script:
     - mvn clean compile
 
 maven_test:
   stage: test
+  tag:
+    - maven
+    - shell
   script:
     - mvn clean verify
-    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered Total"; print 100*covered/instructions, "% covered" }' target/site/jacoco/jacoco.csv
-    #- $missed=0
-    #- $covered=0
-    #- Get-Content .\target\site\jacoco\jacoco.csv | select-object -skip 1 | %{ [int]$missed+=$_.Split(',')[3]; [int]$covered+=$_.Split(',')[4]; } ; Write-Host "$covered / $($missed+$covered) instructions covered. Total $(100*$covered/$($missed+$covered))% covered"
+    #- awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered Total"; print 100*covered/instructions, "% covered" }' target/site/jacoco/jacoco.csv
+    - $missed=0
+    - $covered=0
+    - Get-Content .\target\site\jacoco\jacoco.csv | select-object -skip 1 | %{ [int]$missed+=$_.Split(',')[3]; [int]$covered+=$_.Split(',')[4]; } ; Write-Host "$covered / $($missed+$covered) instructions covered. Total $(100*$covered/$($missed+$covered))% covered"
   artifacts:
     when: always
     reports:
