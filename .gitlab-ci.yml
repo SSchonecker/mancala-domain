@@ -29,7 +29,7 @@ maven_test:
     - Get-Content .\target\site\jacoco\jacoco.csv | select-object -skip 1 | %{ [int]$missed+=$_.Split(',')[3]; [int]$covered+=$_.Split(',')[4]; } ; Write-Host "$covered / $($missed+$covered) instructions covered. Total $(100*$covered/$($missed+$covered))% covered"
   artifacts:
     when: always
-    expire-in: 1 week
+    expire_in: 1 week
     reports:
       junit:
         - target/surefire-reports/TEST-*.xml
