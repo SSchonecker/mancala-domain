@@ -1,10 +1,12 @@
-#include:
-#  - template: Code-Quality.gitlab-ci.yml
+include:
+  - template: Code-Quality.gitlab-ci.yml
+  - template: Dependency-Scanning.gitlab-ci.yml
 
 stages:
   - compile
   - test
-  #- checkCQ
+  - checkCQ
+  - checkDp
   - dockermake
   - dockerrun
   
@@ -22,7 +24,6 @@ maven_test:
     - shell
   script:
     - mvn clean verify
-    #- awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered Total"; print 100*covered/instructions, "% covered" }' target/site/jacoco/jacoco.csv
     - $missed=0
     - $covered=0
     - Get-Content .\target\site\jacoco\jacoco.csv | select-object -skip 1 | %{ [int]$missed+=$_.Split(',')[3]; [int]$covered+=$_.Split(',')[4]; } ; Write-Host "$covered / $($missed+$covered) instructions covered. Total $(100*$covered/$($missed+$covered))% covered"
@@ -36,8 +37,11 @@ maven_test:
       - target/surefire-reports/TEST-nl.sogyo.mancala.domain.PitTest.xml
       - target/site/jacoco/jacoco.xml
 
-#code_quality:
-#  stage: checkCQ
+code_quality:
+  stage: checkCQ
+
+gemnasium-dependency_scanning:
+  stage: checkDp
 
 build_image:
   stage: dockermake
