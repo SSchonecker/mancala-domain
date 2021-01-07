@@ -10,8 +10,8 @@ after_script:
 
 stages:
   - build
-  - dockertry
   - test
+  #- checkCQ
   
 build_image:
   stage: build
@@ -29,12 +29,10 @@ docker_container:
     - docker pull docker4sschonecker/sschonecker-repo:mancalaimage
     - echo "Trying out how to get containers running"
     - docker rm -f silkes-container
-    - docker run -i -d --name silkes-container mancalaimage
     - docker ps -all
     - docker exec silkes-container echo "hopefully visibly in container"
     - docker rm -f silkes-container
     - docker ps -all
-  
 
 maven_test:
   stage: test
@@ -44,9 +42,11 @@ maven_test:
     - build_image
   script:
     - docker pull docker4sschonecker/sschonecker-repo:mancalaimage
-    - echo "Building project with maven"
-    - mvn clean verify
-    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered Total"; print 100*covered/instructions, "% covered" }' target/jacoco/jacoco.csv
+    - docker rm -f silkes-container
+    - docker run --name silkes-container mancalaimage
+    - docker ps -all
+    - docker rm -f silkes-container
+    - docker ps -all
     #- $missed=0
     #- $covered=0
     #- Get-Content .\target\site\jacoco\jacoco.csv | select-object -skip 1 | %{ [int]$missed+=$_.Split(',')[3]; [int]$covered+=$_.Split(',')[4]; } ; Write-Host "$covered / $($missed+$covered) instructions covered. Total $(100*$covered/$($missed+$covered))% covered"
