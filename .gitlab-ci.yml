@@ -38,7 +38,7 @@ maven_test:
       - target/site/jacoco/jacoco.xml
 
 #code_quality:
-  #stage: checkCQ
+#  stage: checkCQ
 
 #gemnasium-dependency_scanning:
   #stage: checkDp
