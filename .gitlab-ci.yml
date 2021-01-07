@@ -6,7 +6,7 @@ before_script:
   - docker login -u $DOCKER_USER_NAME -p $DOCKER_ACCESS_TOKEN
 
 after_script:
-  - docker logout
+  - docker logout docker4sschonecker/sschonecker-repo
 
 stages:
   - build
@@ -28,7 +28,7 @@ docker_container:
   script:
     - docker pull docker4sschonecker/sschonecker-repo:mancalaimage
     - echo "Trying out how to get containers running"
-    - docker run -i --name silkes-container mancalaimage
+    - docker run -i -d --name silkes-container mancalaimage
     - docker ps -all
     - docker exec silkes-container echo "hopefully visibly in container"
     - docker rm -f silkes-container
