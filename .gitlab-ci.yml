@@ -10,14 +10,14 @@ stages:
   
 first_build:
   stage: compile
-  tag:
+  tags:
     - maven
   script:
     - mvn clean compile
 
 maven_test:
   stage: test
-  tag:
+  tags:
     - maven
     - shell
   script:
