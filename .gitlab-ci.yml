@@ -1,12 +1,12 @@
 include:
   - template: Code-Quality.gitlab-ci.yml
-  - template: Dependency-Scanning.gitlab-ci.yml
+  #- template: Dependency-Scanning.gitlab-ci.yml # only available for payers
 
 stages:
   - compile
   - test
   - checkCQ
-  - checkDp
+  #- checkDp
   - dockermake
   - dockerrun
   
@@ -39,8 +39,8 @@ maven_test:
 code_quality:
   stage: checkCQ
 
-gemnasium-dependency_scanning:
-  stage: checkDp
+#gemnasium-dependency_scanning:
+  #stage: checkDp
 
 build_image:
   stage: dockermake
