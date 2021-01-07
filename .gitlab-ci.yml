@@ -21,19 +21,6 @@ build_image:
     - docker build -t docker4sschonecker/sschonecker-repo:mancalaimage .
     - docker push docker4sschonecker/sschonecker-repo:mancalaimage
 
-docker_container:
-  stage: dockertry
-  tags:
-    - docker
-  script:
-    - docker pull docker4sschonecker/sschonecker-repo:mancalaimage
-    - echo "Trying out how to get containers running"
-    - docker rm -f silkes-container
-    - docker ps -all
-    - docker exec silkes-container echo "hopefully visibly in container"
-    - docker rm -f silkes-container
-    - docker ps -all
-
 maven_test:
   stage: test
   tags:
