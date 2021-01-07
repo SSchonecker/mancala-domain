@@ -1,4 +1,4 @@
-FROM maven:latest
+FROM maven:3.6.3
 COPY . /mancala-test
 WORKDIR /mancala-test
 RUN mvn clean compile
