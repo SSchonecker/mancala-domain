@@ -29,9 +29,8 @@ docker_container:
     - docker pull docker4sschonecker/sschonecker-repo:mancalaimage
     - echo "Trying out how to get containers running"
     - docker run -i --name silkes-container mancalaimage
-    - echo "hopefully visibly in container"
-    - "#exit"
     - docker ps -all
+    - docker exec silkes-container echo "hopefully visibly in container"
     - docker rm -f silkes-container
     - docker ps -all
   
