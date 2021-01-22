@@ -141,6 +141,8 @@ public class PitBoard implements Mancala {
 
 	/**
 	 * Method for retrieving the name of the player that has won the game.
+	 * The winner is the player with the most stones on their side
+	 * or with the most stones in their kalaha.
 	 * 
 	 * @return Name of the winner, or 'null' if the game has not ended yet.
 	 */
@@ -149,7 +151,9 @@ public class PitBoard implements Mancala {
 			thePits.setScore();
 			Player winner = thePlayers[0];
 			int winnerIndex = 0;
-			if (winner.getOpponent().getScore() > winner.getScore()) {
+			if (winner.getOpponent().getScore() > winner.getScore() ||
+					(winner.getOpponent().getScore() == winner.getScore() &&
+					thePits.neighbour(13).myStones > thePits.neighbour(6).myStones) ) {
 				winner = winner.getOpponent();
 				winnerIndex = 1;
 			}

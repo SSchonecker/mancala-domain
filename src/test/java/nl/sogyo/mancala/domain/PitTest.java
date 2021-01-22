@@ -268,4 +268,50 @@ public class PitTest {
 		assertEquals(34,initPit.neighbour(7).getOwner().getScore());
 		assertEquals(initPit.neighbour(7).getOwner(), winner);
 	}
+	
+	@Test
+	public void correctWinnerOnTie() {
+		/**
+		 * Ensure the correct winner is determined
+		 * in case both sides have equal amount of stones
+		 */
+		int[] stonesLayout = {0,0,1,0,1,0,22,0,0,0,0,0,0,24};
+		setLayout(stonesLayout);
+		initPit.setScore();
+		Player winner = initPit.getOwner();
+		int winnerIndex = 0;
+		if (winner.getOpponent().getScore() > winner.getScore() ||
+				(winner.getOpponent().getScore() == winner.getScore() &&
+				initPit.neighbour(13).myStones > initPit.neighbour(6).myStones) ) {
+			winner = winner.getOpponent();
+			winnerIndex = 1;
+		}
+		
+		assertEquals(winner.getScore(), winner.getOpponent().getScore());
+		assertEquals(initPit.neighbour(7).getOwner(), winner);
+		assertEquals(1, winnerIndex);
+	}
+	
+	@Test
+	public void correctWinnerOnTieOpposite() {
+		/**
+		 * Ensure the correct winner is determined
+		 * in case both sides have equal amount of stones
+		 */
+		int[] stonesLayout = {0,0,0,0,0,0,24,0,1,0,1,0,0,22};
+		setLayout(stonesLayout);
+		initPit.setScore();
+		Player winner = initPit.getOwner();
+		int winnerIndex = 0;
+		if (winner.getOpponent().getScore() > winner.getScore() ||
+				(winner.getOpponent().getScore() == winner.getScore() &&
+				initPit.neighbour(13).myStones > initPit.neighbour(6).myStones) ) {
+			winner = winner.getOpponent();
+			winnerIndex = 1;
+		}
+		
+		assertEquals(winner.getScore(), winner.getOpponent().getScore());
+		assertEquals(initPit.getOwner(), winner);
+		assertEquals(0, winnerIndex);
+	}
 }
